@@ -1,8 +1,8 @@
 """
 This module:
-    - Fetches all datasets.
+    - Fetches all datasets you provide
+    - Cleans any unsuitable values
     - Morphs datasets into pipeline friendly structures
-    - 
 """
 
 import os
@@ -20,6 +20,7 @@ class DataCleaner:
         """
         self.datasets = os.listdir('./datasets/')
         self.handles = []
+        self.markers = []
 
     def data_catch_status(self):
         """
@@ -90,3 +91,29 @@ class DataCleaner:
                 self._create_dataset_pointers(title, ext)
             except Exception as exc:
                 raise(f'LOG:: {title}.{ext} failed reading.' + exc)
+
+    def _calculate_loss_thresholds(self, df):
+        """
+        Calculates the threshold to which we are able to expend data.
+        A dataset with less than 1000 entries is extremely valuable, 
+            and we must take risks while modelling.
+        
+        This subroutine requires HIGH intuition, so I'm a basic to split thresholds to two levels.
+        """
+        rows, cols = df.shape
+
+        # Only if our dataset is very small, we use heavy imputation, and Leave One out CV
+        if rows < 1000 and cols < 30:
+            self.markers.append({
+                'cv': 'loocv',
+                'threshold': None
+            })
+            return
+
+        self.markers.append({
+            'threshold': 0.3
+        })
+
+    def _find_loss_thresholds(self):
+        for handle in self.handles:
+            self._calculate_loss_thresholds(handle)
