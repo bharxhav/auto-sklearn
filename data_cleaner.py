@@ -52,7 +52,7 @@ class DataCleaner:
             params = json.load(open(f'{title}.json', 'r'))
 
         df = None
-        loc = f'./{title}.{ext}'
+        loc = f'./datasets/{title}.{ext}'
 
         if ext == 'csv':
             if params:
