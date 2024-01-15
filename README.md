@@ -7,6 +7,8 @@ This package will help you perform ML on __ANY__ tabular data. The result of mod
 - Co-dependency of Features
 - PCA efficiency
 
+Apart from the above valuable information, this package requires minimal `requirements.txt`. The odds are you probably have these already installed.
+
 ---
 
 ## Installation
@@ -20,7 +22,7 @@ git clone https://github.com/your-username/auto-sklearn.git
 cd auto-sklearn
 ```
 
-### Create a Virtual Environment (OPTIONAL)
+### Create a Virtual Environment (OPTIONAL|RECOMMENDED)
 
 You can set the environment's name as you wish by replacing `auto-env`.
 
@@ -58,6 +60,8 @@ I am developing this project to blaze through basic modelling when I want to:
 Finally, this package will help me write a Data Science blog in a very short time by reducing preliminary data testing time. This inturn helps me focus on novelty and creative aspects of Data Science. I also get to learn new areas of DS in a weekly basis.
 
 You can find my blogs here: [bhargavkantheti.com](https://bhargavkantheti.com/).
+
+---
 
 ## Usage
 
