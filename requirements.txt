@@ -1,0 +1,7 @@
+setuptools
+
+numpy
+scipy
+pandas
+scikit-learn
+xgboost
