@@ -8,6 +8,7 @@ This module:
 import os
 import json
 import pandas as pd
+from sklearn.impute import SimpleImputer
 
 class DataCleaner:
     """
@@ -117,3 +118,6 @@ class DataCleaner:
     def _find_loss_thresholds(self):
         for handle in self.handles:
             self._calculate_loss_thresholds(handle)
+
+    def _perform_imputation(self):
+        pass
