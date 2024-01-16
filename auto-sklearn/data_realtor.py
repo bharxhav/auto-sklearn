@@ -29,3 +29,4 @@ class DataRealtor:
         """
 
         return df.dropna(axis=0)
+    
