@@ -4,6 +4,8 @@ DataRealtor converts a dataset into modelling food.
 
 import os
 import pandas as pd
+from collections import Counter
+from imblearn.over_sampling import SMOTE
 
 class DataRealtor:
     """
@@ -56,3 +58,14 @@ class DataRealtor:
         self.x = self.x[~is_outlier]
         self.y = self.y[~is_outlier]
 
+    def _manage_imbalance(self):
+        """
+        SMOTE-ing is the easiest and less controversial way to deal with data imbalance.
+        If minority class is less than 20% of the data, SMOTE is applied.
+        """
+        class_distribution = Counter(self.y)
+        minority_class_ratio = class_distribution[min(class_distribution, key=class_distribution.get)] / len(self.y)
+        
+        if minority_class_ratio < 0.2:
+            smote = SMOTE()
+            self.x, self.y = smote.fit_resample(self.x, self.y)
