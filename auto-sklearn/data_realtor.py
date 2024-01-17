@@ -94,3 +94,21 @@ class DataRealtor:
         if minority_class_ratio < minority_threshold:
             smote = SMOTE()
             self.x, self.y = smote.fit_resample(self.x, self.y)
+    
+    def _encode_data(self):
+        """
+        One-hot encodes categorical features and drops the first column to prevent multicollinearity.
+        """
+        categorical_columns_x = self.x.select_dtypes(include=['object']).columns
+        categorical_columns_y = self.y.select_dtypes(include=['object']).columns
+        
+        if not categorical_columns_x.empty:
+            self.x = pd.get_dummies(self.x, columns=categorical_columns_x, drop_first=True)
+        
+        if not categorical_columns_y.empty:
+            self.y = pd.get_dummies(self.y, drop_first=True)
+        
+        # Ensure self.y has only one column
+        if isinstance(self.y, pd.DataFrame) and len(self.y.columns) > 1:
+            self.y = self.y.iloc[:, [0]]
+
