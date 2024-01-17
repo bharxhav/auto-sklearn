@@ -25,6 +25,12 @@ class DataRealtor:
         self.x, self.y = df.pop(target_feature)
 
         self.modelling_method = None
+        self._find_method()
+
+        if self.modelling_method == 'C':
+            self._manage_imbalance()
+        else:
+            self._manage_outlier()
 
     def _manage_missing(self, df):
         """
@@ -77,7 +83,7 @@ class DataRealtor:
         self.x = self.x[~is_outlier]
         self.y = self.y[~is_outlier]
 
-    def _manage_imbalance(self):
+    def _manage_imbalance(self, minority_threshold=0.2):
         """
         SMOTE-ing is the easiest and less controversial way to deal with data imbalance.
         If minority class is less than 20% of the data, SMOTE is applied.
@@ -85,6 +91,6 @@ class DataRealtor:
         class_distribution = Counter(self.y)
         minority_class_ratio = class_distribution[min(class_distribution, key=class_distribution.get)] / len(self.y)
         
-        if minority_class_ratio < 0.2:
+        if minority_class_ratio < minority_threshold:
             smote = SMOTE()
             self.x, self.y = smote.fit_resample(self.x, self.y)
