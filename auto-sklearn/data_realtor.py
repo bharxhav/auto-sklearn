@@ -6,6 +6,7 @@ import os
 import pandas as pd
 from collections import Counter
 from imblearn.over_sampling import SMOTE
+from sklearn.preprocessing import StandardScaler
 
 class DataRealtor:
     """
@@ -21,7 +22,6 @@ class DataRealtor:
         df = pd.read_csv(path_to_file)
         df = self._manage_missing(df)
 
-        # Separating Target and Features
         self.x, self.y = df.pop(target_feature)
 
         self.modelling_method = None
@@ -31,6 +31,12 @@ class DataRealtor:
             self._manage_imbalance()
         else:
             self._manage_outlier()
+        
+        self._encoder()
+
+        self.scaler = None
+        self._scaler()
+
 
     def _manage_missing(self, df):
         """
@@ -95,7 +101,7 @@ class DataRealtor:
             smote = SMOTE()
             self.x, self.y = smote.fit_resample(self.x, self.y)
     
-    def _encode_data(self):
+    def _encoder(self):
         """
         One-hot encodes categorical features and drops the first column to prevent multicollinearity.
         """
@@ -112,3 +118,12 @@ class DataRealtor:
         if isinstance(self.y, pd.DataFrame) and len(self.y.columns) > 1:
             self.y = self.y.iloc[:, [0]]
 
+    def _scaler(self):
+        """
+        Scaling the features in self.x using appropriate scalers for appropriate columns.
+        """
+        numerical_columns = self.x.select_dtypes(include=['float']).columns
+
+        if not numerical_columns.empty:
+            self.scaler = StandardScaler()
+            self.x[numerical_columns] = self.scaler.fit_transform(self.x[numerical_columns])
