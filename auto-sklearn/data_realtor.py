@@ -34,6 +34,23 @@ class DataRealtor:
 
         return df.dropna(axis=0)
     
+    def _find_method(self, integer_threshold=10):
+        """
+        Determines the type of modelling task: Classification or Regression
+        based on the data type of the target feature.
+        """
+        if isinstance(self.y, (int, float)):
+            unique_values = sorted(self.y.unique())
+            max_value = max(unique_values)
+            min_value = min(unique_values)
+            
+            if max_value - min_value < integer_threshold:
+                self.modelling_method = "C"  # Disguised Integer Classification
+            else:
+                self.modelling_method = "R"  # Regression
+        else:
+            self.modelling_method = "C"  # Classification
+    
     def _manage_outlier(self):
         """
         Tukey's Method to remove outliers.
