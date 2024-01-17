@@ -24,6 +24,8 @@ class DataRealtor:
         # Separating Target and Features
         self.x, self.y = df.pop(target_feature)
 
+        self.modelling_method = None
+
     def _manage_missing(self, df):
         """
         Removes any row with missing value.
