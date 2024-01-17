@@ -7,6 +7,7 @@ import pandas as pd
 from collections import Counter
 from imblearn.over_sampling import SMOTE
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
 
 class DataRealtor:
     """
@@ -37,6 +38,8 @@ class DataRealtor:
         self.scaler = None
         self._scaler()
 
+        self.x_train, self.x_test, self.y_train, self.y_test = None, None, None, None
+        self._splitter()
 
     def _manage_missing(self, df):
         """
@@ -127,3 +130,14 @@ class DataRealtor:
         if not numerical_columns.empty:
             self.scaler = StandardScaler()
             self.x[numerical_columns] = self.scaler.fit_transform(self.x[numerical_columns])
+
+    def _splitter(self, test_size=0.2, random_state=252):
+        """
+        Split the dataset into training and testing sets.
+        """
+        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(
+            self.x,
+            self.y,
+            test_size=test_size,
+            random_state=random_state
+            )
