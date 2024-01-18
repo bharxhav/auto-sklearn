@@ -1,6 +1,8 @@
 """
 ModelRealtor trains the following models.
 
+!! NOTE: The order is very important here, as you can limit tasks based on device limitations !!
+
 Regression Models:
 1. Linear Regression
 2. Ridge Regression
@@ -45,5 +47,29 @@ Classification Models:
 import pandas as pd
 
 class ModelRealtor:
-    def __init__(self) -> None:
+    """
+    Based on DataRealtor's modelling_method, 18 models are deployed in a distributed architecture!
+    This class can also be used independent of DataRealtor.
+
+    Pass either modelling_method or any of {'C', 'R'}.
+    - C: Classification Task
+    - R: Regression Task
+    """
+    def __init__(self, data_tuple, task, streams=18) -> None:
+        """
+        data_tuple is (x_train, x_test, y_train, y_test), each of which are pandas dataframes.
+        """
+        self.x_train, self.x_test, self.y_train, self.y_test = data_tuple
+
+        self.task = task
+
+        if self.task == 'C':
+            self._deploy_classification_streams(streams)
+        elif self.task == 'R':
+            self._deploy_regression_streams(streams)
+
+    def _deploy_classification_streams(self, stream_limit=18):
+        pass
+
+    def _deploy_regression_streams(self, stream_limit=18):
         pass
