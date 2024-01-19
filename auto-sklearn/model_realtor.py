@@ -44,8 +44,67 @@ Classification Models:
 18. One-Class SVM (OneClassSVM)
 """
 
-import pandas as pd
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 
+class _Model:
+    """
+    Modular architecture to make modelling abstract.
+    """
+    def __init__(self, model) -> None:
+        self.model = model
+
+    def train(self, x_train, y_train):
+        """
+        Trains the model.
+        """
+        self.model.fit(x_train, y_train)
+
+    def predict(self, x_test):
+        """
+        Tests the model.
+        """
+        return self.model.predict(x_test)
+
+    def metricize_regression(self, predictions, actual):
+        """
+        Calculate regression metrics: MAE, MSE, RMSE, R2
+        """
+        metrics = {}
+
+        # Mean Absolute Error
+        metrics['MAE'] = mean_absolute_error(actual, predictions)
+        
+        # Mean Squared Error
+        metrics['MSE'] = mean_squared_error(actual, predictions)
+        
+        # Root Mean Squared Error
+        metrics['RMSE'] = mean_squared_error(actual, predictions, squared=False)
+        
+        # R-squared
+        metrics['R2'] = r2_score(actual, predictions)
+
+        return metrics
+
+    def metricize_classification(self, predictions, actual):
+        """
+        Calculate classification metrics: Accuracy, F1, Precision, Recall
+        """
+        metrics = {}
+
+        # Accuracy
+        metrics['Accuracy'] = accuracy_score(actual, predictions)
+        
+        # F1-score
+        metrics['F1'] = f1_score(actual, predictions)
+        
+        # Precision
+        metrics['Precision'] = precision_score(actual, predictions)
+        
+        # Recall
+        metrics['Recall'] = recall_score(actual, predictions)
+
+        return metrics
 class ModelRealtor:
     """
     Based on DataRealtor's modelling_method, 18 models are deployed in a distributed architecture!
