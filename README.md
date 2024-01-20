@@ -1,5 +1,8 @@
 # auto-sklearn
 
+`80-90%` of the world's data is unstructured. So why waste time when dealing with structured data. `auto-sklearn` will help you use industry-standard techniques to do a preliminary investigation of your dataset so that you can worry about the __*creative*__ part!
+
+
 This package will help you perform ML on __ANY__ tabular data. The result of modelling will be a weighted network describing which features were associated with which modelling method. This will help you understand:
 
 - Feature Bias
